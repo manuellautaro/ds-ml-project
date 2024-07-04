@@ -20,3 +20,11 @@ def fill_missing_values(df:pd.DataFrame) -> pd.DataFrame:
     df["altitude_high_meters"] = df["altitude_high_meters"].fillna(altitude_high_meters_mean)
     df["altitude_mean_log"] = df["altitude_mean_log"].fillna(altitude_mean_log_mean)
     return df
+
+def check_for_zero_values(df:pd.Dataframe) -> pd.DataFrame:
+    df_pp = df.copy()
+    missing = pd.DataFrame((df_pp==0).sum(), columns=["Zero_Amount"])
+    missing.head()
+    missing['Percentage'] = round((missing['Zero_Amount']/df.shape[0])*100, 2)
+    missing[missing['Zero_Amount'] != 0].sort_values(by = 'Percentage', ascending=False)
+    return missing
